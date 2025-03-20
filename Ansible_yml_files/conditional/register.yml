@@ -1,0 +1,16 @@
+- name: Use registered variable in conditions
+  hosts: U22B
+  tasks:
+    - name: Check if user is root
+      command: whoami
+      register: user_info
+
+    - name: Run task if the user is root
+      debug:
+        msg: "The user is root"
+      when: user_info.stdout == 'root'
+
+    - name: Run taskl if the user is not root
+      debug:
+        msg: "The user is not root"
+      when: user_info.stdout != 'root'

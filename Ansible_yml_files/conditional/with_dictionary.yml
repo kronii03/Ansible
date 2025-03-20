@@ -1,0 +1,10 @@
+- name: with_dict
+  hosts: localhost
+  tasks:
+    - name: print dictionary with keys
+      debug:
+        msg: "key: {{ item.key }}, value: {{ item.value }}"
+      with_dict:
+        user1: admin
+        user2: guest
+        user3: root

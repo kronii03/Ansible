@@ -1,0 +1,22 @@
+- name: Run Task based on Package list
+  hosts: U22B
+  vars:
+    packages:
+      - vim
+      - git
+      - curl
+  tasks:
+    - name: Check if curl is installed
+      debug:
+        msg: "Curl is installed"
+      when: "'curl' in packages"
+
+    - name: Check if nginx is installed
+      debug:
+        msg: "nginx is installed"
+      when: "'nginx' in packages"
+
+    - name: Check if git is installed
+      debug:
+        msg: "git installed"
+      when: "'git' in packages"

@@ -1,0 +1,11 @@
+- name: with_random_choice
+  hosts: localhost
+  tasks:
+    - name: install package random
+      debug:
+        msg: "Selected package is: {{ item }}"
+      with_random_choice:
+        - nginx
+        - curl
+        - git
+        - apache2

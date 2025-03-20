@@ -1,0 +1,17 @@
+- name: 조건문 예시 - 변수값 비교
+  hosts: U22B
+  vars:
+    install_nginx: true
+
+  tasks:
+    - name: install nginx
+      apt:
+        name: nginx
+        state: present
+      when: install_nginx == true
+
+    - name: install apache2
+      apt:
+        name: apache2
+        state: present
+      when: install_nginx != true

@@ -1,0 +1,9 @@
+- name: with_nested
+  hosts: localhost
+  tasks:
+    - name: loop list
+      debug:
+        msg: "First value is: {{ item[0] }}, Second value is: {{ item[1] }}"
+      with_nested:
+        - ['apple', 'banana']
+        - ['red', 'yellow']

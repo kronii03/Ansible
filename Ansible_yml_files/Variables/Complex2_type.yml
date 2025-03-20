@@ -1,0 +1,23 @@
+- name: Example playbook with list and dictionary
+  hosts: U22B
+  vars:
+    servers:
+      - name: webserver1
+        settings:
+          ip: 192.168.1.1
+          role: web
+          ports:
+            - 80
+            - 443
+      - name: dbserver
+        settings:
+          ip: 192.168.1.2
+          role: database
+          ports:
+            - 3306
+
+  tasks:
+    - name: Print server details with ports
+      debug:
+        msg: "Server {{ item.name }} (IP: {{ item.settings.ip }}) with role {{ item.settings.role }} will open ports: {{ item.settings.ports | join(',') }}"
+      loop: "{{ servers }}"

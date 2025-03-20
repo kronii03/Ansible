@@ -1,0 +1,12 @@
+- name: Using the example of range index
+  hosts: localhost
+  vars:
+    fruits:
+      - apple
+      - banana
+      - cherry
+  tasks:
+    - name: Using index and loop the lists
+      debug:
+        msg: "Fruits: {{ fruits[item] }}"
+      loop: "{{ range(0, fruits | length) }}"

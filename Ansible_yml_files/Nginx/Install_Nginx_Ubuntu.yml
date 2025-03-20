@@ -1,0 +1,37 @@
+- name: Install and configure Nginx on Ubuntu
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+
+    - name: Ensure Nginx is running
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Change the content of index.html
+      copy:
+        content: |
+          <html>
+            <head>
+              <title>Welcome to My Website</title>
+            </head>
+            <body>
+              <h1>Hello, Welcome to My Website hosted with Nginx!</h1>
+              <p>This is a simple Nginx setup configured via Ansible.</p>
+            </body>
+          </html>
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+

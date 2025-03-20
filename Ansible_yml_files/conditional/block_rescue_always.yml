@@ -1,0 +1,22 @@
+- name: Example playbook with block, rescue, and always
+  hosts: web
+  become: yes
+  tasks:
+    - name: Ensure some package is installed
+      block:
+        - name: Install vim package
+          package:
+            name: vim
+            state: present
+        - name: Modify configuration file
+          lineinfile:
+            path: /etc/some_config.conf
+            line: "setting=value"
+      rescue:
+        - name: Handle failure if vim installation or config modification fails
+          debug:
+            msg: "Error occurred during package installation or config modification."
+      always:
+        - name: Always run this task, regardless of success or failure
+          debug:
+            msg: "This task runs no matter what, after block or rescue."

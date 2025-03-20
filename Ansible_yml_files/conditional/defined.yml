@@ -1,0 +1,12 @@
+- name: Check if variable is defined
+  hosts: U22B
+  tasks:
+    - name: Run task if the variable is defined
+      debug:
+        msg: "The variable is defined"
+      when: my_var is defined
+
+    - name: Run task if the variable is not defined
+      debug:
+        msg: "The variable is not defined"
+      when: my_var is not defined

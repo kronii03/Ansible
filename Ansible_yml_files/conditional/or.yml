@@ -1,0 +1,10 @@
+- name: Run Task if at least one condition is true
+  hosts: U22B
+  vars:
+    is_admin: false
+    has_access: true
+  tasks:
+    - name: Perform action if one condition is met
+      debug:
+        msg: "At least one condition is ture"
+      when: is_admin == true or has_access == true

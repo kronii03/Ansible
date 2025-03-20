@@ -1,0 +1,72 @@
+- name: Install and configure vsftpd on Ubuntu and create user7
+  hosts: all
+  become: true
+  tasks:
+
+    - name: Install vsftpd
+      apt:
+        name: vsftpd
+        state: present
+        update_cache: yes
+
+    - name: Ensure vsftpd service is running and enabled
+      service:
+        name: vsftpd
+        state: started
+        enabled: yes
+
+    - name: Install python3-passlib package
+      apt:
+        name: python3-passlib
+        state: present
+        update_cache: yes
+
+    - name: Configure vsftpd settings (disable anonymous login)
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: '^#?anonymous_enable='
+        line: 'anonymous_enable=NO'
+
+    - name: Ensure vsftpd allow chroot write
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: '^#?allow_writeable_chroot='
+        line: 'allow_writeable_chroot=YES'
+
+    - name: Configure vsftpd to chroot users to their home directories
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: '^#?chroot_local_user='
+        line: 'chroot_local_user=YES'
+
+    - name: Ensure vsftpd allows local users
+      lineinfile:
+        path: /etc/vsftpd.conf
+        regexp: '^#?local_enable='
+        line: 'local_enable=YES'
+
+    - name : Ensure vsftpd service restart
+      service:
+        name: vsftpd
+        state: restarted
+
+    - name: Create user7 for FTP access
+      user:
+        name: user7
+        state: present
+        comment: "FTP User7"
+        shell: /bin/bash
+        home: /home/user7
+
+    - name: Set password for user7
+      ansible.builtin.user:
+        name: user7
+        password: "{{ '7' | password_hash('sha512') }}"
+
+    - name: Set correct permissions for user7's home directory
+      file:
+        path: /home/user7
+        owner: user7
+        group: user7
+        mode: '0755'
+        state: directory

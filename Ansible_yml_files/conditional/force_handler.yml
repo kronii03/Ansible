@@ -1,0 +1,22 @@
+- name: Example playbook with force_handlers
+  hosts: db
+  become: yes
+  force_handlers: yes
+  tasks:
+    - name: Install a package (may trigger a handler)
+      package:
+        name: nginx
+        state: present
+      notify:
+        - Restart service
+    - name: Modify a configuration file (will trigger handler)
+      lineinfile:
+        path: /etc/some_config.conf
+        line: "setting=value"
+      notify:
+        - Restart service
+  handlers:
+    - name: Restart service
+      service:
+        name: nginx
+        state: restarted

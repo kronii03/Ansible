@@ -1,0 +1,16 @@
+- name: Example playbook with dictionary
+  hosts: U22B
+  vars:
+    database:
+      host: localhost
+      port: 3306
+      user: admin
+      password: secret
+
+  tasks:
+    - name: Print database host
+      debug:
+        msg: "Database host: {{ database.host }}"
+    - name: Print database credentials
+      debug:
+        msg: "Database user: {{ database.user }}, password: {{ database.password }}"

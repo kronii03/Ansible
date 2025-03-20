@@ -1,0 +1,10 @@
+- name: Using Dynamic Variable with Set_fact
+  hosts: all
+  tasks:
+    - name: Set a dynamic variable using set_fact
+      set_fact:
+        custom_message: "Hello, {{ ansible_hostname }}"
+
+    - name: Display the custom message
+      debug:
+        msg: "{{ custom_message }}"

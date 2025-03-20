@@ -1,0 +1,16 @@
+- name: Example playbook with list of dictionaries
+  hosts: U22B
+  vars:
+    servers:
+      - name: webserver1
+        ip: 192.168.1.1
+        role: web
+      - name: dbserver
+        ip: 192.168.1.2
+        role: database
+
+  tasks:
+    - name: Print server details
+      debug:
+        msg: "Server {{ item.name }} with IP {{ item.ip }} is a {{ item.role }} server"
+      loop: "{{ servers }}"

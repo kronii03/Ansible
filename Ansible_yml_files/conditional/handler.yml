@@ -1,0 +1,33 @@
+- name: Install and configure rsyslog
+  hosts: web
+  become: yes
+  tasks:
+    - name: Install rsyslog
+      package:
+        name: rsyslog
+        state: present
+
+    - name: Ensure rsyslog service is running
+      service:
+        name: rsyslog
+        state: started
+        enabled: yes
+
+    - name: Modify rsyslog configuration
+      lineinfile:
+        path: /etc/rsyslog.conf
+        line: "*.* /var/log/custom.log"
+      notify:
+        - Restart rsyslog
+
+  handlers:
+    - name: Restart rsyslog
+      service:
+        name: rsyslog
+        state: restarted
+      notify:
+        - Print msg
+
+    - name: Print msg
+      debug:
+        msg: "rsyslog server has been restarted"

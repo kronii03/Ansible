@@ -1,0 +1,11 @@
+- name: loop test
+  hosts: web
+  tasks:
+    - name: Install other package
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - nginx
+        - curl
+        - git

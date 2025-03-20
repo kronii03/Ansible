@@ -1,0 +1,15 @@
+- name: Example playbook with task-specific vars
+  hosts: all
+  become: true
+  tasks:
+    - name: Print server name with local variable
+      vars:
+        server_name: task_specific.local
+      debug:
+        msg: "The server name is {{ server_name }}"
+
+    - name: Print HTTP port with local variable
+      vars:
+        http_port: 8081
+      debug:
+        msg: "The HTTP port is {{ http_port }}"

@@ -1,0 +1,13 @@
+- name: Gather System Facts
+  hosts: all
+  gather_facts: true #기본적으로 설정되어 있음
+  tasks:
+    - name: Display hostname
+      debug:
+        msg: "The hostname is {{ ansible_hostname }}"
+    - name: Display OS Family
+      debug:
+        msg: "The OS Family is {{ ansible_os_family }}"
+    - name: Display IP Address
+      debug:
+        msg: "The default IPv4 address is {{ ansible_default_ipv4.address }}"

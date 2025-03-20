@@ -1,0 +1,17 @@
+- name: Example playbook with vars_prompt
+  hosts: localhost
+  vars_prompt:
+    - name: "username"
+      prompt: "Please enter your username"
+      private: no
+
+    - name: "password"
+      prompt: "Please enter your password"
+      private: yes
+
+  tasks:
+    - name: Show entered username and password
+      debug:
+        msg: |
+          "Username: {{ username }}"
+          "Password: {{ password }}"

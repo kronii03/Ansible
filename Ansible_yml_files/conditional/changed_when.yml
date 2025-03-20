@@ -1,0 +1,8 @@
+- name: changed_when cp
+  hosts: U22B
+  tasks:
+    - name: /tmp/hello.txt
+      copy:
+        src: hello.txt
+        dest: /tmp/hello.txt
+      changed_when: lookup('file', 'hello.txt') != lookup('file', '/root/hello.txt')

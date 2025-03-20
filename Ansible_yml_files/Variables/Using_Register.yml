@@ -1,0 +1,9 @@
+- name: Register example
+  hosts: all
+  tasks:
+    - name: Get data command result
+      command: date
+      register: date_result
+    - name: Show the date command result
+      debug:
+        msg: "The current date is {{ date_result.stdout }}"

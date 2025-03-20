@@ -1,0 +1,12 @@
+- name: Example playbook with list
+  hosts: U22B
+  vars:
+    servers:
+      - webserver1
+      - webserver2
+      - dbserver
+  tasks:
+    - name: Print list of servers
+      debug:
+        msg: "Deploying on {{ item }}"
+      loop: "{{ servers }}"

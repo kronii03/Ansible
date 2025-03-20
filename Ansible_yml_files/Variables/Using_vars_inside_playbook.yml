@@ -1,0 +1,14 @@
+- name: Example playbook with vars
+  hosts: all
+  become: true
+  vars:
+    http_port: 8080
+    server_name: webserver.local
+  tasks:
+    - name: Print HTTP Port
+      debug:
+        msg: "The HTTP Port is {{ http_port }}"
+
+    - name: Print server name
+      debug:
+        msg: "The server name is {{ server_name }}"

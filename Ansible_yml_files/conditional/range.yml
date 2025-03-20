@@ -1,0 +1,7 @@
+- name: Example with loop instead of with_sequence
+  hosts: localhost
+  tasks:
+    - name: Print numbers form 1 to 5
+      debug:
+        msg: "Number: {{ item }}"
+      loop: "{{ range(1, 6) }}"

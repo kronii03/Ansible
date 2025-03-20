@@ -1,0 +1,90 @@
+- name: Install and Configure Nginx With 2 Virtual Hosts On Ubuntu
+  hosts: web
+  become: yes
+  tasks:
+    # 1. Nginx Install
+    - name: Install Nginx
+      apt:
+        name: nginx
+        state: present
+        update_cache: yes
+	
+    # 2. Make two Virtual Hosts
+    - name: Create the configuration for naver.com
+      copy:
+        dest: /etc/nginx/sites-available/naver.com
+        content: |
+          server {
+            listen 80;
+            server_name naver.com;
+
+            root /var/www/naver/;
+            index index.html;
+
+            location /{
+              try_files $uri $uri/ =404;
+            }
+          }
+
+    - name: Create the configuration for google.com
+      copy:
+        dest: /etc/nginx/sites-available/google.com
+        content: |
+          server {
+            listen 80;
+            server_name google.com;
+
+            root /var/www/google/;
+            index index.html;
+
+            location /{
+              try_files $uri $uri/ =404;
+            }
+          }
+
+    # 3. Virtual Hosts make Symbolic Link? in sites-enabled
+    - name: Enable naver.com site
+      file:
+        src: /etc/nginx/sites-available/naver.com
+        dest: /etc/nginx/sites-enabled/naver.com
+        state: link
+
+
+    - name: Enable google.com site
+      file:
+        src: /etc/nginx/sites-available/google.com
+        dest: /etc/nginx/sites-enabled/google.com
+        state: link
+
+    # 4. Make Web Contents Directory
+    - name: Create Directory for naver.com
+      file:
+        path: /var/www/naver/
+        state: directory
+
+    - name: Create Directory for google.com
+      file:
+        path: /var/www/google/
+        state: directory
+
+    # 5. Make main file "index.html" to each domain
+    - name: Create index.html for naver.com
+      copy:
+        dest: /var/www/naver/index.html
+        content: "Welcome to naver.com"
+
+    - name: Create index.html for google.com
+      copy:
+        dest: /var/www/google/index.html
+        content: "Welcome to google.com"
+
+    # 6. Test Nginx
+    - name: Test nginx configuration
+      command: nginx -t
+
+    # 7. restart Nginx
+    - name: Restart Nginx
+      systemd:
+        name: nginx
+        state: restarted
+        enabled: yes

@@ -1,0 +1,9 @@
+- hosts: all
+  tasks:
+    - name: Calculate sum of two numbers
+      set_fact:
+        result: "{{ 5 + 3 }}"
+
+    - name: Display the result
+      debug:
+        msg: "{{ result }}"

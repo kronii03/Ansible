@@ -1,0 +1,9 @@
+- name: Use logical NOT in conditions
+  hosts: U22B
+  vars:
+    is_active: false
+  tasks:
+    - name: Run task if condition is not true
+      debug:
+        msg: "The condition is not true"
+      when: not is_active

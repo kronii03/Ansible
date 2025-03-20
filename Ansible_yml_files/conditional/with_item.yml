@@ -1,0 +1,11 @@
+- name: with_itmes
+  hosts: U22B
+  tasks:
+    - name: other package
+      apt:
+        name: "{{ item }}"
+        state: present
+      with_itmes:
+        - nginx
+        - curl
+        - git

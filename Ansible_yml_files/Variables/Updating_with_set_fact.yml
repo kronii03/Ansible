@@ -1,0 +1,13 @@
+- hosts: all
+  tasks:
+    - name: Set initial valuse for app_version
+      set_fact:
+        app_version: "1.0"
+
+    - name: Update app_version fact
+      set_fact:
+        app_version: "2.0"
+
+    - name: Display update app_version
+      debug:
+        msg: "The Updated app version is {{ app_version }}"
