@@ -1,5 +1,5 @@
 - name: Install and configure Nginx on Ubuntu
-  hosts: all
+  hosts: web
   become: yes
   tasks:
     - name: Update apt cache

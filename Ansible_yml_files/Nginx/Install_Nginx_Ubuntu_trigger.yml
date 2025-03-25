@@ -1,0 +1,68 @@
+- name: Clean install and configure Nginx on Ubuntu
+  hosts: web
+  become: yes
+
+  tasks:
+    - name: Remove existing Nginx and purge configs
+      apt:
+        name: nginx
+        state: absent
+        purge: yes
+      ignore_errors: yes
+
+    - name: Remove /etc/nginx directory if exists
+      file:
+        path: /etc/nginx
+        state: absent
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600
+
+    - name: Install latest Nginx
+      apt:
+        name: nginx
+        state: latest
+
+    - name: Check if nginx.conf exists
+      stat:
+        path: /etc/nginx/nginx.conf
+      register: nginx_conf
+
+    - name: Reinstall Nginx if config is missing
+      apt:
+        name: nginx
+        state: latest
+        force: yes
+      when: not nginx_conf.stat.exists
+
+    - name: Test Nginx configuration
+      command: nginx -t
+      register: nginx_test
+      changed_when: false
+      failed_when: nginx_test.rc != 0
+
+    - name: Ensure Nginx is running and enabled
+      service:
+        name: nginx
+        state: started
+        enabled: yes
+
+    - name: Update index.html content
+      copy:
+        content: |
+          <html>
+            <head>
+              <title>Welcome to My Website</title>
+            </head>
+            <body>
+              <h1>Hello, Welcome to My Website hosted with Nginx!</h1>
+              <p>This is a simple Nginx setup configured via Ansible.</p>
+            </body>
+          </html>
+        dest: /var/www/html/index.html
+        owner: www-data
+        group: www-data
+        mode: '0644'
+
