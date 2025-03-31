@@ -1,5 +1,5 @@
 - name: Install and configure MariaDB with Python3 and pip
-  hosts: db
+  hosts: aws-ec2
   become: yes # sudo 권한으로 실행
 
   tasks:
@@ -77,6 +77,22 @@
         rule: allow
         port: '3306'
         proto: tcp
+
+    - name: Grant root privileges for remote access
+      mysql_user:
+        name: root
+        host: '%'
+        password: "1234"
+        priv: "*.*:ALL,GRANT"
+        login_user: root
+        login_password: "1234"
+        state: present
+
+    - name: Flush privileges to apply changes
+      mysql_query:
+        query: "FLUSH PRIVILEGES;"
+        login_user: root
+        login_password: "1234"
 
   handlers:
     - name: Restart MariaDB
